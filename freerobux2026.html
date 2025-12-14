@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redeem</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+/* FŐ DOBOZ */
+.container {
+    text-align: center;
+    padding: 25px;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    background: #f2f2f2;
+}
+
+img {
+    width: 160px;
+    margin-bottom: 15px;
+}
+
+input {
+    padding: 12px;
+    font-size: 16px;
+    width: 220px;
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+    padding: 12px 25px;
+    font-size: 18px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* OVERLAY */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+/* MODAL */
+.modal {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    width: 85%;
+    max-width: 320px;
+}
+
+/* NYERÉS */
+.win {
+    color: green;
+    font-size: 28px;
+    font-weight: bold;
+    animation: winAnim 1.5s infinite alternate;
+}
+
+/* VERESÉG – ROSSZ BETŰ */
+.lose {
+    color: darkred;
+    font-size: 24px;
+    font-family: "Comic Sans MS", "Impact", cursive;
+}
+
+/* ANIMÁCIÓ */
+@keyframes winAnim {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <img src="robux.png">
+    <div>
+        <input id="code" placeholder="Redeem code">
+    </div>
+    <button onclick="redeem()">Redeem</button>
+</div>
+
+<!-- FELUGRÓ ABLAK -->
+<div class="overlay" id="overlay">
+    <div class="modal" id="modal"></div>
+</div>
+
+<audio id="winSound" src="win.mp3"></audio>
+
+<script>
+const saved = localStorage.getItem("result");
+
+if (saved) {
+    showResult(saved);
+}
+
+function redeem() {
+    const code = document.getElementById("code").value.trim();
+
+    if (!code) return;
+
+    if (code === "freerobux2026") {
+        localStorage.setItem("result", "win");
+        showResult("win");
+    } else {
+        localStorage.setItem("result", "lose");
+        showResult("lose");
+    }
+}
+
+function showResult(type) {
+    const overlay = document.getElementById("overlay");
+    const modal = document.getElementById("modal");
+
+    overlay.style.display = "flex";
+
+    if (type === "win") {
+        modal.innerHTML = `<div class="win">You won 400 Robux!</div>`;
+        document.getElementById("winSound").play();
+    } else {
+        modal.innerHTML = `<div class="lose">Helytelen kód.<br>Vesztettél.</div>`;
+    }
+}
+</script>
+
+</body>
+</html>
